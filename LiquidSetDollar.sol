@@ -1,6 +1,6 @@
 /**
 
-// LiquidSetDollar is a Deflation token with a 3% adjustable redistribution tax & 2% Deflation alongside an algoritmic stable coin function that constantly aims for a price of $1USD
+// Liquid Set Dollar is a Deflation token with a 3% adjustable redistribution tax & 2% Deflation alongside an algoritmic stable coin function that constantly aims for a price of $1USD
 
 // 【Ｌｉｑｕｉｄ　Ｓｅｔ　Ｄｏｌｌａｒ】
 // 【Ｌｉｑｕｉｄ　Ｓｅｔ　Ｄｏｌｌａｒ】
@@ -8,22 +8,22 @@
 // 【Ｌｉｑｕｉｄ　Ｓｅｔ　Ｄｏｌｌａｒ】
 
                                                                           
-// LiquidSetDollar(LSD) is a modified fork of DSD and RFR
+// Liquid Set Dollar(LSD) is a modified fork of DSD and RFR
 */
 
 // SPDX-License-Identifier: MIT
 
 
 /*
- * LiquidSetDollar was built for the community, By the community Layer 2 DSD with a twist, LiquidSetDollar and frictionless yield 
+ * Liquid Set Dollar was built for the community, By the community Layer 2 DSD with a twist, Liquid Set Dollar and frictionless yield 
     with 3% reward(adjustable from 1% to 10%) & 2% burning emission.Redesigned to maximize profit.
- * LiquidSetDollar works by applying 3% the fee which is 3% to each transaction 
+ * Liquid Set Dollar works by applying 3% the fee which is 3% to each transaction 
     & instantly splitting that fee among all holders of the token & 2% is automatically burn that continuously 
-    reduces the total supply of LiquidSetDollar. 
+    reduces the total supply of Liquid Set Dollar. 
  * LSD is a decentralized stablecoin which uses a supply elasticity method based upon Time Weighted Average 
     Price alongside burn and re-distribution. This creates a deflationary, algorithmic stable coin that 
     consistently increases in value, even without large volume
- * Telegram: https://t.me/LiquidSetDollar
+ * Telegram: https://t.me/Liquid Set Dollar
  * Website: http://www.liquidset.finance/
  */
  
@@ -495,7 +495,7 @@ contract LiquidSetDollar is Context, IERC20, Ownable {
     uint256 private _tFeeTotal;
     uint256 private _tBurnTotal;
 
-    string private _name = 'LiquidSetDollar';
+    string private _name = 'Liquid Set Dollar';
     string private _symbol = 'LSD';
     uint8 private _decimals = 9;
     
@@ -747,6 +747,21 @@ contract LiquidSetDollar is Context, IERC20, Ownable {
     function _getTaxFee() private view returns(uint256) {
         return _taxFee;
     }
+
+    function _getMaxTxAmount() private view returns(uint256) {
+        return _maxTxAmount;
+    }
+    
+    function _setTaxFee(uint256 taxFee) external onlyOwner() {
+        require(taxFee >= 1 && taxFee <= 10, 'taxFee should be in 1 - 10');
+        _taxFee = taxFee;
+    }
+    
+    function _setMaxTxAmount(uint256 maxTxAmount) external onlyOwner() {
+        require(maxTxAmount >= 9000e9 , 'maxTxAmount should be greater than 9000e9');
+        _maxTxAmount = maxTxAmount;
+    }
+}
 
 /**
  *Submitted for verification at Etherscan.io on 2020-11-25
@@ -2194,7 +2209,7 @@ library Constants {
     uint256 private constant ORACLE_RESERVE_MINIMUM = 1e10; // 10,000 USDC
 
     /* Bonding */
-    uint256 private constant INITIAL_STAKE_MULTIPLE = 1e6; // 100 DSD -> 100M DSDS
+    uint256 private constant INITIAL_STAKE_MULTIPLE = 1e6; // 100 LSD -> 100M LSDS
 
     /* Epoch */
     struct EpochStrategy {
@@ -2214,7 +2229,7 @@ library Constants {
     uint256 private constant GOVERNANCE_EMERGENCY_DELAY = 6; // 6 epochs
 
     /* DAO */
-    uint256 private constant ADVANCE_INCENTIVE = 1e20; // 100 DSD
+    uint256 private constant ADVANCE_INCENTIVE = 1e20; // 100 LSD
     uint256 private constant DAO_EXIT_LOCKUP_EPOCHS = 36; // 36 epochs fluid
 
     /* Pool */
@@ -2426,7 +2441,7 @@ contract IDollar is IERC20 {
 contract Dollar is IDollar, MinterRole, ERC20Detailed, Permittable, ERC20Burnable {
 
     constructor()
-    ERC20Detailed("Dynamic Set Dollar", "DSD", 18)
+    ERC20Detailed("Liquid Set Dollar", "LSD", 9)
     Permittable()
     public
     { }
@@ -2445,20 +2460,5 @@ contract Dollar is IDollar, MinterRole, ERC20Detailed, Permittable, ERC20Burnabl
                 allowance(sender, _msgSender()).sub(amount, "Dollar: transfer amount exceeds allowance"));
         }
         return true;
-    }
-}
-
-    function _getMaxTxAmount() private view returns(uint256) {
-        return _maxTxAmount;
-    }
-    
-    function _setTaxFee(uint256 taxFee) external onlyOwner() {
-        require(taxFee >= 1 && taxFee <= 10, 'taxFee should be in 1 - 10');
-        _taxFee = taxFee;
-    }
-    
-    function _setMaxTxAmount(uint256 maxTxAmount) external onlyOwner() {
-        require(maxTxAmount >= 9000e9 , 'maxTxAmount should be greater than 9000e9');
-        _maxTxAmount = maxTxAmount;
     }
 }
